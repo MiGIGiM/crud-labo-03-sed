@@ -3,16 +3,15 @@ const express = require('express');
 
 const router = express.Router();
 const {
-  register, deleteUser, getAllUser, getCurrentUser
-} = require('../controllers/Usuarios/UsuariosController');
+  register, deleteUser, getAllUsers, getCurrentUser
+} = require('../controllers/User/UserController');
 
 const options = { session: false };
 
 router.post('/register', register);
-router.post('/login', passport.authenticate('local', options), login);
 
 router.get('/current', passport.authenticate('bearer', options), getCurrentUser);
-router.get('/', passport.authenticate('bearer', options), getAllUser);
+router.get('/', passport.authenticate('bearer', options), getAllUsers);
 
 router.delete('/delete-user', passport.authenticate('bearer', options), deleteUser);
 
