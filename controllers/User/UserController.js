@@ -4,19 +4,6 @@ const User = require('../../models/User');
 const { registerValidator } = require('./UserValidator');
 
 const UserController = {
-  login: async (req, res) => {
-    try {
-      if (req.user) {
-        return res.status(200).json({
-          token: jwt.sign({ _id: req.user._id, admin: req.user.admin }, process.env.TOKEN_KEY),
-        });
-      }
-      return res.status(404).json({ message: 'User not found' });
-    } catch (err) {
-      return res.status(400).json(err.message);
-    }
-  },
-
   register: async (req, res) => {
     try {
       await registerValidator(req.body);
@@ -34,7 +21,6 @@ const UserController = {
 
   deleteUser: async (req, res) => {
     try {
-      if (req.user.admin === false) return res.status(403).json({ message: 'Action Denied' });
 
       await User.findOneAndDelete({ _id: req.user._id });
 
@@ -46,7 +32,6 @@ const UserController = {
 
   getAllUsers: async (req, res) => {
     try {
-      if (req.user.admin === false) return res.status(403).json({ message: 'Action Denied' });
 
       const { page = 1, limit = 12 } = req.query;
 
